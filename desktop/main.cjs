@@ -10,7 +10,7 @@ function startApi() {
   const entry = path.join(serverDir, "index.js");
   apiProcess = spawn(process.execPath, [entry], {
     cwd: serverDir,
-    env: process.env,
+    env: { ...process.env, HOST: "127.0.0.1" },
     stdio: "inherit"
   });
   apiProcess.on("error", (error) => console.error("JARVIS API could not start:", error.message));
