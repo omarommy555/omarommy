@@ -1,0 +1,41 @@
+name: Build JARVIS macOS DMG
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - jarvis-macos-desktop
+    paths:
+      - "desktop/**"
+      - ".github/workflows/build-macos.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build-macos-arm64:
+    runs-on: macos-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Install desktop dependencies
+        run: npm --prefix desktop install
+
+      - name: Build Apple Silicon DMG
+        run: npm --prefix desktop run dist:mac
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: jarvis-2-macos-arm64
+          path: desktop/dist/*.dmg
+          if-no-files-found: error
+          retention-days: 14
