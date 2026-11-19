@@ -72,7 +72,7 @@ document.querySelectorAll("[data-view]").forEach(button => button.addEventListen
 (async () => {
   try {
     const info = await window.jarvisDesktop.getSystemInfo();
-    $("platform").textContent = info.platform === "darwin" ? "macOS" : info.platform;
+    $("platform").textContent = info.platform === "darwin" ? "macOS · " + String(info.architecture || "unknown").toUpperCase() : info.platform;
     $("os-release").textContent = "System " + info.release + " · App " + info.appVersion;
   } catch {}
   checkHealth(); setInterval(checkHealth, 15000);
