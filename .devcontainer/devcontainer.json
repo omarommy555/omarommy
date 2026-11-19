@@ -1,0 +1,32 @@
+{
+  "name": "JARVIS 2.0 Development",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
+  "forwardPorts": [
+    8787,
+    8081,
+    19000,
+    19001,
+    19002
+  ],
+  "portsAttributes": {
+    "8081": {
+      "label": "Expo Metro",
+      "onAutoForward": "notify"
+    },
+    "8787": {
+      "label": "JARVIS API",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "npm --prefix server install && npm --prefix app install",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint"
+      ]
+    }
+  }
+}
