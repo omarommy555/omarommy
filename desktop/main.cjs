@@ -8,7 +8,7 @@ let apiProcess;
 function startApi() {
   const serverDir = path.join(__dirname, "..", "server");
   const entry = path.join(serverDir, "index.js");
-  apiProcess = spawn(process.execPath, [entry], {
+  apiProcess = spawn(process.env.JARVIS_NODE_PATH || "node", [entry], {
     cwd: serverDir,
     env: { ...process.env, HOST: "127.0.0.1" },
     stdio: "inherit"
