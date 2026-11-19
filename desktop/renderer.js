@@ -40,10 +40,15 @@ async function sendMessage(text) {
 $("chat-form").addEventListener("submit", (event) => {event.preventDefault(); const field=$("prompt"); const text=field.value.trim(); field.value=""; sendMessage(text);});
 $("prompt").addEventListener("keydown", (event) => {if(event.key==="Enter"&&!event.shiftKey){event.preventDefault();$("chat-form").requestSubmit();}});
 $("focus-chat").addEventListener("click", () => $("prompt").focus());
-$("speak-intro").addEventListener("click", () => {
-  if (!("speechSynthesis" in window)) return;
-  const speech = new SpeechSynthesisUtterance("Hello. JARVIS desktop interface is ready. How may I assist you?");
-  speech.rate = 0.95; window.speechSynthesis.speak(speech);
+$("speak-intro").addEventListener("click", async () => {
+  const greeting = "Hello. JARVIS desktop interface is ready. How may I assist you?";
+  if (window.jarvisDesktop?.speak) await window.jarvisDesktop.speak(greeting);
+  else if ("speechSynthesis" in window) window.speechSynthesis.speak(new SpeechSynthesisUtterance(greeting));
+});
+$("configure-ai").addEventListener("click", async () => {
+  const result = await window.jarvisDesktop?.openConfig();
+  if (result) addMessage("assistant", "Your private AI settings file could not be opened: " + result);
+  else addMessage("assistant", "AI settings opened. Add your provider key, save the file, then restart JARVIS.");
 });
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 if (SpeechRecognition) {
