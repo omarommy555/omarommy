@@ -1,57 +1,61 @@
 # J.A.R.V.I.S 2.0
 
-A personal AI assistant workspace with an Expo mobile starter, Node.js API, and a macOS desktop shell.
+A personal AI assistant workspace with an Expo mobile starter, Node.js API, and an Apple Silicon-ready macOS desktop app.
 
 ## Project layout
 
 - `app/` — Expo React Native application
-- `server/` — Express API; AI provider keys stay on the server
-- `desktop/` — Electron macOS desktop application
-- `.devcontainer/` — GitHub Codespaces configuration
+- `server/` — Express API for mobile and development
+- `desktop/` — Electron macOS application, bundled local API, and DMG build configuration
 - `docs/ROADMAP.md` — implementation plan and module status
+- `docs/MACOS.md` — macOS setup and packaging instructions
 
-## Run on macOS
+## Run on macOS (development)
 
 Requirements: macOS, a current Node.js LTS release, and npm.
 
-1. Clone the repository and open its folder in Terminal.
+1. Clone the `jarvis-macos-desktop` branch.
 2. Install dependencies: `npm run install:all`.
-3. Create `server/.env` using `server/.env.example` as a template.
-4. Add a newly generated AI provider key to `server/.env` (for example, `GROQ_API_KEY`). Never put provider keys in the desktop renderer or commit `.env`.
-5. Launch the desktop app: `npm run start:desktop`.
+3. Create `server/.env` from `server/.env.example` if it does not exist.
+4. Add a newly generated AI provider key to `server/.env` (for example, `GROQ_API_KEY`). Never commit `.env`.
+5. Launch: `npm run start:desktop`.
 
-The Electron main process starts the local Express API and opens the desktop window. The API listens on port 8787. If another process is already using that port, stop it before launching the desktop app. To run the API separately for debugging, use `npm run start:api`.
+The desktop application starts its own Express API inside the Electron main process. The API listens only on `127.0.0.1:8787`. Do not run a second API instance on that port at the same time.
+
+## Build an Apple Silicon DMG
+
+From the repository root:
+
+```bash
+npm run install:all
+npm --prefix desktop run dist:mac
+```
+
+The Apple Silicon installer is generated in `desktop/dist/`. This build targets ARM64 Macs. The app is currently configured for local unsigned development distribution; macOS may show a Gatekeeper warning. Public distribution requires an Apple Developer ID signing certificate and notarization.
+
+## AI configuration
+
+In the desktop app, select **Configure AI**. This opens the local environment settings file in your default text editor.
+
+- Development: `server/.env` in the cloned project.
+- Packaged app: `server.env` inside the JARVIS application support folder under macOS Application Support.
+
+Add a provider key such as `GROQ_API_KEY=your_new_key`, save, and restart JARVIS. Never paste API keys into chat, renderer code, or GitHub. The app creates the local settings file with owner-only permissions where supported.
 
 ## Desktop capabilities and current limitations
 
-- Electron desktop window with an isolated preload bridge and context isolation.
-- Chat UI connected to the existing local AI API.
-- API health and provider-configuration status.
-- Optional speech output and browser-runtime speech recognition where supported and permitted.
-- Navigation placeholders for projects, business, research, and image generation. These modules are not integrations yet.
+- Electron desktop window with context isolation and a restricted preload bridge.
+- Local AI chat using the existing Groq and optional Hugging Face-compatible providers.
+- Local API health and provider status.
+- Native macOS speech output using the built-in `say` utility.
+- Browser-runtime speech recognition where supported by the installed Electron/macOS runtime; otherwise text chat remains available.
+- Navigation placeholders for projects, business, research, and image generation. Those integrations are not implemented yet.
 - No unrestricted shell execution or automatic file modification is exposed to the renderer.
-
-Voice recognition support depends on the Electron/macOS runtime and microphone permission. If unavailable, text chat remains usable.
 
 ## Mobile and Codespaces
 
-The Expo mobile app remains available with `npm run start:app`. For Codespaces instructions and iPhone networking notes, see the existing setup guide below.
-
-## AI provider configuration
-
-Groq is the primary provider. Hugging Face is an optional fallback if `HF_TOKEN` is configured. Both secrets belong only in the server environment. Use newly generated credentials and revoke any credential previously pasted into a chat or committed to a repository.
+The Expo mobile app remains available with `npm run start:app`. For Codespaces, use the API and Expo setup documented in the existing project history and configure the forwarded API URL in `app/.env`.
 
 ## Security
 
-This repository is public. Do not store secrets, personal records, financial account data, or production customer data here. The API is a local development service, not a production multi-user service. Before public deployment, add authentication, authorization, rate limiting, abuse controls, secure logging, persistent storage, and backups. Keep the API bound to localhost for desktop-only use and do not expose port 8787 publicly while testing.
-
-## Existing Codespaces setup
-
-1. Open this repository in GitHub Codespaces.
-2. If your Codespace predates the devcontainer setup, run **Codespaces: Rebuild Container** from the Command Palette.
-3. Open a terminal. Run `npm run install:all` if dependencies are not installed.
-4. Add your provider key as a Codespaces secret or create `server/.env`. Never commit `.env`.
-5. Start the API with `npm run start:api`.
-6. In the Codespaces **Ports** panel, keep port `8787` private unless public access is intentionally required. Open its forwarded URL and append `/api/health` to test it.
-7. Set `EXPO_PUBLIC_API_URL` in `app/.env` to the forwarded API URL, without a trailing slash.
-8. Start Expo with `npm run start:app`.
+This repository is public. Do not store secrets, personal records, financial account data, or production customer data here. The desktop API is bound to localhost. Before public multi-user deployment, add authentication, authorization, rate limiting, abuse controls, secure logging, persistent storage, and backups.
