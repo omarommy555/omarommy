@@ -1,10 +1,11 @@
 {
   "name": "jarvis-2-workspace",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
-    "install:all": "npm --prefix server install && npm --prefix app install",
+    "install:all": "npm --prefix server install && npm --prefix app install && npm --prefix desktop install",
     "start:api": "npm --prefix server run dev",
-    "start:app": "npm --prefix app run start -- --tunnel"
+    "start:app": "npm --prefix app run start -- --tunnel",
+    "start:desktop": "npm --prefix desktop start"
   }
 }
