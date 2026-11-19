@@ -9,6 +9,7 @@ app.use(cors({ origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split("
 app.use(express.json({ limit: "32kb" }));
 
 const port = Number(process.env.PORT || 8787);
+const host = process.env.HOST || "0.0.0.0";
 const timeoutMs = Number(process.env.AI_TIMEOUT_MS || 30000);
 
 app.get("/api/health", (_req, res) => {
@@ -80,4 +81,4 @@ app.post("/api/chat", async (req, res) => {
   return res.status(502).json({ error: "All configured AI providers failed.", details: errors });
 });
 
-app.listen(port, "0.0.0.0", () => console.log(`JARVIS API listening on port ${port}`));
+app.listen(port, host, () => console.log(`JARVIS API listening on http://${host}:${port}`));
