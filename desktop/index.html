@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src http://127.0.0.1:8787; style-src 'self'; script-src 'self'; img-src 'self' data:">
+  <title>JARVIS 2.0</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">J</span><div><strong>J.A.R.V.I.S</strong><small>PERSONAL AI SYSTEM · 2.0</small></div></div>
+      <div class="nav-label">WORKSPACE</div>
+      <button class="nav-item active" data-view="overview">◈ <span>Overview</span></button>
+      <button class="nav-item" data-view="assistant">◎ <span>AI Assistant</span></button>
+      <button class="nav-item" data-view="voice">◖ <span>Voice Console</span></button>
+      <div class="nav-label">COMMAND CENTRE</div>
+      <button class="nav-item" data-view="projects">▦ <span>Projects</span></button>
+      <button class="nav-item" data-view="business">▤ <span>Business Hub</span></button>
+      <button class="nav-item" data-view="research">⌕ <span>Research</span></button>
+      <button class="nav-item" data-view="studio">✧ <span>Image Studio</span></button>
+      <div class="sidebar-bottom"><span class="status-dot"></span><span id="api-status">CONNECTING TO CORE</span></div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div><span class="eyebrow">PERSONAL INTELLIGENCE SYSTEM</span><h1 id="page-title">Command overview</h1></div><div class="top-right"><span class="chip">MACOS DESKTOP</span><span class="avatar">O</span></div></header>
+      <section class="hero">
+        <div class="hero-copy"><span class="eyebrow">JARVIS CORE · READY TO ASSIST</span><h2>At your command<span>.</span></h2><p>Your workspace for ideas, research and everyday productivity.</p><div class="hero-actions"><button class="primary" id="focus-chat">Start a conversation ↗</button><button class="secondary" id="speak-intro">▶ Hear system greeting</button></div></div>
+        <div class="reactor"><div class="ring ring-a"></div><div class="ring ring-b"></div><div class="core">J</div><span class="reactor-caption">JARVIS CORE</span></div>
+      </section>
+      <section class="metrics"><article class="metric"><span>CORE STATUS</span><strong id="core-state">INITIALIZING</strong><small>Local assistant API</small></article><article class="metric"><span>PLATFORM</span><strong id="platform">macOS</strong><small id="os-release">Desktop environment</small></article><article class="metric"><span>AI PROVIDER</span><strong id="provider">NOT CONNECTED</strong><small>Configured on local server</small></article><article class="metric"><span>VOICE ENGINE</span><strong id="voice-state">BROWSER READY</strong><small>Speech support varies by macOS browser engine</small></article></section>
+      <section class="workspace">
+        <div class="panel chat-panel" id="chat-panel"><div class="panel-head"><div><span class="eyebrow">NEURAL INTERFACE</span><h3>Talk to JARVIS</h3></div><span class="live-tag">● LIVE</span></div><div id="messages" class="messages"><div class="message assistant"><span class="message-label">JARVIS</span><p>Good day. JARVIS interface is online. Configure your AI provider in the server environment to begin.</p></div></div><form id="chat-form"><textarea id="prompt" rows="2" placeholder="Enter a command or ask a question…"></textarea><div class="composer-actions"><button type="button" class="icon-button" id="voice-button" title="Voice input">🎙</button><span id="voice-hint">Enter to send · Shift + Enter for a new line</span><button class="primary send" type="submit" id="send-button">SEND COMMAND ↗</button></div></form></div>
+        <div class="panel modules-panel"><div class="panel-head"><div><span class="eyebrow">SYSTEM MODULES</span><h3>Workspaces</h3></div></div><div class="module-list"><button class="module-row" data-view="projects"><span class="module-icon">▦</span><span><b>Project control</b><small>Project workspace · coming soon</small></span><i>↗</i></button><button class="module-row" data-view="business"><span class="module-icon">▤</span><span><b>Business hub</b><small>Business tools · coming soon</small></span><i>↗</i></button><button class="module-row" data-view="research"><span class="module-icon">⌕</span><span><b>Web research</b><small>Source-backed research · coming soon</small></span><i>↗</i></button><button class="module-row" data-view="studio"><span class="module-icon">✧</span><span><b>Image studio</b><small>Image generation · coming soon</small></span><i>↗</i></button></div><div class="notice">Modules marked “coming soon” are interface placeholders, not active integrations.</div></div>
+      </section>
+      <footer>J.A.R.V.I.S 2.0 <span>SECURE LOCAL DESKTOP SHELL · BUILD 2.0.0</span></footer>
+    </main>
+  </div>
+  <script src="renderer.js"></script>
+</body>
+</html>
