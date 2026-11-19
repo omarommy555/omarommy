@@ -1,11 +1,13 @@
 const { app, BrowserWindow, ipcMain, shell } = require("electron");
 const fs = require("node:fs");
 const path = require("node:path");
+const { spawn } = require("node:child_process");
 const { pathToFileURL } = require("node:url");
 
 let mainWindow;
 let apiServer;
 let envPath;
+let speechProcess;
 
 function prepareSettings() {
   envPath = app.isPackaged
@@ -48,6 +50,19 @@ function createWindow() {
   });
   mainWindow.loadFile(path.join(__dirname, "index.html"));
 }
+
+ipcMain.handle("jarvis:speak", (_event, text) => {
+  if (process.platform !== "darwin" || typeof text !== "string" || !text.trim() || text.length > 1200) return false;
+  if (speechProcess && !speechProcess.killed) speechProcess.kill();
+  speechProcess = spawn("/usr/bin/say", ["-r", "185", text.trim()], { stdio: "ignore" });
+  speechProcess.on("error", (error) => console.error("macOS speech failed:", error.message));
+  return true;
+});
+
+ipcMain.handle("jarvis:stop-speaking", () => {
+  if (speechProcess && !speechProcess.killed) speechProcess.kill();
+  return true;
+});
 
 ipcMain.handle("jarvis:open-config", async () => {
   prepareSettings();
