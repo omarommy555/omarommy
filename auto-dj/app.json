@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "AUTO DJ AI",
+    "slug": "auto-dj-ai",
+    "version": "0.1.0",
+    "orientation": "default",
+    "userInterfaceStyle": "dark",
+    "ios": { "supportsTablet": true },
+    "android": { "adaptiveIcon": { "backgroundColor": "#080a0f" } },
+    "web": { "bundler": "metro" }
+  }
+}
